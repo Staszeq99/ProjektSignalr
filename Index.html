@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Projekt</title>
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.2.2.js"></script>
+    <script src="/signalr/hubs"></script>
+
+    <script type="text/javascript">
+        var DOT = $.connection.drawDot; //tworze polaczenie z SignalR
+
+        $.connection.hub.start().done(); //uruchamiam SignalR hub
+
+        DOT.client.updateDot = function (x, y) {
+            drawDot(x, y, 8);                         //wywołanie funkcji z Serwera DrawDot
+        }
+
+        DOT.client.clearCanvas = function (x, y) {
+            clearCanvas();
+        };
+        //////////////////////////////////////////////////////
+        var canvas, ctx; //zmienne odwolujace sie do pola rysunku i kontekstu (zawartosci)
+
+        var mouseX, mouseY, mouseDown = 0; // zmienne ustalajace pozycje myszki i status wcisnietego przycisku
+
+        function drawDot(x, y, size) {
+            r = 0; g = 0; b = 0; a = 255; //ustawienie koloru na czarny
+
+            ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (a / 255) + ")"; //wybor stylu wypelnienia
+
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill;                        //narysowanie wypelnionego kolka
+        }
+
+        function cleanCanvas() { 
+
+            clearCanvas();
+            DOT.server.clearCanvas();
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function sketchpad_mouseDown() {
+            mouseDown = 1;
+            drawDot(mouseX, mouseY, 8);
+
+            DOT.server.updateCanvas(mouseX, mouseY);
+        }
+
+        function sketchpad_mouseUp() {
+            mouseDown = 0;
+        }
+
+        function sketchpad_mouseMove(e) {
+
+            getMousePos(e);
+
+            if (mouseDown == 1) {
+                drawDot(mouseX, mouseY, 8);
+                DOT.server.updateCanvas(mouseX, mouseY);
+            }
+        }
+
+        function getMousePos(e) {
+            if (!e)
+                var e = event;
+
+            if (e.offsetX) {
+                mouseX = e.offsetX;
+                mouseY = e.offsetY;
+            }
+            else if (e.layerX) {
+                mouseX = e.layerX;
+                mouseY = e.layerY;
+            }
+        }
+         //przygotowanie pola do rysunku
+        function init() {
+
+            canvas = document.getElementById('sketchpad');
+
+            if (canvas.getContext)
+                ctx = canvas.getContext('2d');
+
+            if (ctx) {
+                canvas.addEventListener('mousedown', sketchpad_mouseDown, false);
+                canvas.addEventListener('mousemove', sketchpad_mouseMove, false);
+                canvas.addEventListener('mouseup', sketchpad_mouseUp, false);
+            }
+            else {
+                document.write("Wystapil problem z przegladarka!!");
+            }
+
+        }
+    </script>
+
+    <style>
+        .rightside{
+            float: left;
+            margin-left: 10px;
+        }
+
+        #sketchpad {
+            float: left;
+            height: 500px;
+            width: 1100px;
+            border: 2px solid #888;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        #clear_button, #save_button {
+            float: left;
+            font-size: 15px;
+            padding: 10px;
+            -webkit-appearance: none;
+            background: #eee;
+            border: 1px solid #888;
+            margin-bottom: 5px;
+        }
+    </style>
+
+</head>
+<body onload="init()">
+    <div id"sketchpadapp">
+        <div class="rightside">
+            <input type="submit" value="Wyczyść pole" id="clear_button" onclick="cleanCanvas();" />
+            <br />
+            <canvas id="sketchpad" height="500" width="1100"></canvas>
+        </div>
+    </div>
+</body>
+</html>
