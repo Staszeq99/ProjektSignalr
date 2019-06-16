@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rysowanko", "Rysowanko\Rysowanko.csproj", "{3DDF9D99-57FD-4194-BBF9-D9039EDE9D70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3DDF9D99-57FD-4194-BBF9-D9039EDE9D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DDF9D99-57FD-4194-BBF9-D9039EDE9D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DDF9D99-57FD-4194-BBF9-D9039EDE9D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DDF9D99-57FD-4194-BBF9-D9039EDE9D70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED709392-5B51-4D6A-AC31-A8509D0FDB8A}
+	EndGlobalSection
+EndGlobal
